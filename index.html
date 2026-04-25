@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Dirt Bikes USA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#1a1a1a',
+              darker: '#111111',
+              card: '#2d2d2d',
+              cardHover: '#363636',
+              orange: '#f97316',
+              orangeHover: '#ea580c',
+              muted: '#a3a3a3',
+              light: '#e5e5e5',
+              border: '#404040',
+            }
+          },
+          fontFamily: {
+            heading: ['system-ui', '-apple-system', 'sans-serif'],
+            body: ['system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    };
+    </script>
+    <style>
+      * { box-sizing: border-box; }
+      body { background-color: #1a1a1a; color: #e5e5e5; font-family: system-ui, -apple-system, sans-serif; }
+      .page-section { display: none; }
+      .page-section.active { display: block; }
+      .nav-link { transition: color 0.2s; }
+      .nav-link:hover, .nav-link.active { color: #f97316; }
+      .btn-orange { background-color: #f97316; color: #fff; transition: background-color 0.2s; }
+      .btn-orange:hover { background-color: #ea580c; }
+      .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+      .card-hover:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(249,115,22,0.15); }
+      .hero-gradient { background: linear-gradient(135deg, #111111 0%, #1a1a1a 40%, #2d2d2d 100%); }
+      .blog-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+      .blog-content.expanded { max-height: 500px; }
+      html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <app-icon hidden data-icon="bike" data-palette="Dark"></app-icon>
+
+    <!-- NAVBAR -->
+    <nav id="navbar-main" class="fixed top-0 left-0 right-0 z-50 bg-brand-darker/95 backdrop-blur border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+            <a href="#" id="logo-link-a1b2" class="flex items-center gap-2 cursor-pointer" data-page="home">
+                <svg viewBox="0 0 32 32" class="w-8 h-8 text-brand-orange" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="8" cy="22" r="6"/><circle cx="24" cy="22" r="6"/><path d="M8 22l6-12h6l4 12"/><path d="M14 10l3 5"/>
+                </svg>
+                <span class="text-xl font-extrabold tracking-tight text-white">DIRT BIKES <span class="text-brand-orange">USA</span></span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#home" data-page="home" class="nav-link text-sm font-semibold uppercase tracking-wide text-brand-light cursor-pointer active">Home</a>
+                <a href="#products" data-page="products" class="nav-link text-sm font-semibold uppercase tracking-wide text-brand-muted cursor-pointer">Products</a>
+                <a href="#about" data-page="about" class="nav-link text-sm font-semibold uppercase tracking-wide text-brand-muted cursor-pointer">About</a>
+                <a href="#contact" data-page="contact" class="nav-link text-sm font-semibold uppercase tracking-wide text-brand-muted cursor-pointer">Contact</a>
+                <a href="#blog" data-page="blog" class="nav-link text-sm font-semibold uppercase tracking-wide text-brand-muted cursor-pointer">Blog</a>
+            </div>
+            <button id="hamburger-btn-x7k9" class="md:hidden p-2 text-brand-light" aria-label="Open menu">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu-m3n4" class="hidden md:hidden bg-brand-darker border-t border-brand-border">
+            <div class="flex flex-col px-4 py-4 gap-1">
+                <a href="#home" data-page="home" class="mobile-nav-link nav-link text-base font-semibold uppercase tracking-wide text-brand-light py-3 px-2 rounded cursor-pointer active">Home</a>
+                <a href="#products" data-page="products" class="mobile-nav-link nav-link text-base font-semibold uppercase tracking-wide text-brand-muted py-3 px-2 rounded cursor-pointer">Products</a>
+                <a href="#about" data-page="about" class="mobile-nav-link nav-link text-base font-semibold uppercase tracking-wide text-brand-muted py-3 px-2 rounded cursor-pointer">About</a>
+                <a href="#contact" data-page="contact" class="mobile-nav-link nav-link text-base font-semibold uppercase tracking-wide text-brand-muted py-3 px-2 rounded cursor-pointer">Contact</a>
+                <a href="#blog" data-page="blog" class="mobile-nav-link nav-link text-base font-semibold uppercase tracking-wide text-brand-muted py-3 px-2 rounded cursor-pointer">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 pt-16">
+
+        <!-- ==================== HOME PAGE ==================== -->
+        <div id="home" class="page-section active">
+            <!-- Hero -->
+            <section class="hero-gradient min-h-[85vh] flex items-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-5">
+                    <svg class="w-full h-full" viewBox="0 0 800 600" fill="none">
+                        <circle cx="650" cy="300" r="250" stroke="#f97316" stroke-width="1"/>
+                        <circle cx="650" cy="300" r="180" stroke="#f97316" stroke-width="0.5"/>
+                        <path d="M0 500 Q200 350 400 450 T800 400" stroke="#f97316" stroke-width="0.5"/>
+                    </svg>
+                </div>
+                <div class="max-w-7xl mx-auto px-4 md:px-6 py-20 relative z-10">
+                    <div class="max-w-3xl">
+                        <span class="inline-block text-brand-orange text-sm font-bold uppercase tracking-widest mb-4">Off-Road Excellence Since 1996</span>
+                        <h1 id="hero-title-h1k2" class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">Built to Conquer<br/>Any Trail</h1>
+                        <p id="hero-sub-p3q4" class="text-lg md:text-xl text-brand-muted mb-10 max-w-xl leading-relaxed">Premium off-road motorcycles crafted with the world's finest components since 1996</p>
+                        <button id="hero-cta-btn-r5s6" data-page="products" class="btn-orange px-8 py-4 rounded-lg text-lg font-bold uppercase tracking-wide inline-flex items-center gap-2 cursor-pointer">
+                            Explore Our Bikes <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Models -->
+            <section class="bg-brand-dark py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <h2 id="featured-title-t7u8" class="text-3xl md:text-4xl font-extrabold text-white mb-3">Featured Models</h2>
+                        <p class="text-brand-muted text-lg">Our most popular bikes, built for champions</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="bg-brand-card rounded-xl p-8 card-hover border border-brand-border">
+                            <div class="w-16 h-16 bg-brand-orange/10 rounded-xl flex items-center justify-center mb-5">
+                                <svg viewBox="0 0 48 48" class="w-10 h-10 text-brand-orange" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="32" r="8"/><circle cx="36" cy="32" r="8"/><path d="M12 32l8-16h8l8 16"/><path d="M20 16l4 7"/></svg>
+                            </div>
+                            <span class="text-brand-orange text-xs font-bold uppercase tracking-widest">Best Seller</span>
+                            <h3 class="text-2xl font-bold text-white mt-2 mb-2">Enduro 550</h3>
+                            <p class="text-brand-muted mb-4">Our flagship endurance racer. Maximum power with a 550cc Rotax engine for serious competition.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-extrabold text-brand-orange">$8,800</span>
+                                <button data-page="products" class="nav-btn text-sm font-semibold text-brand-orange flex items-center gap-1 cursor-pointer">Learn More <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card rounded-xl p-8 card-hover border border-brand-border">
+                            <div class="w-16 h-16 bg-brand-orange/10 rounded-xl flex items-center justify-center mb-5">
+                                <svg viewBox="0 0 48 48" class="w-10 h-10 text-brand-orange" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="32" r="8"/><circle cx="36" cy="32" r="8"/><path d="M12 32l8-16h8l8 16"/><path d="M20 16l4 7"/><path d="M28 16l-2 4" stroke-dasharray="2 2"/></svg>
+                            </div>
+                            <span class="text-brand-orange text-xs font-bold uppercase tracking-widest">Motocross</span>
+                            <h3 class="text-2xl font-bold text-white mt-2 mb-2">Moto 300</h3>
+                            <p class="text-brand-muted mb-4">Engineered for the motocross track. Superior handling on jumps and corners with a 300cc Rotax engine.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-extrabold text-brand-orange">$7,295</span>
+                                <button data-page="products" class="nav-btn text-sm font-semibold text-brand-orange flex items-center gap-1 cursor-pointer">Learn More <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Dirt Bikes USA -->
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <h2 id="why-title-v9w0" class="text-3xl md:text-4xl font-extrabold text-white mb-3">Why Dirt Bikes USA?</h2>
+                        <p class="text-brand-muted text-lg">Three reasons riders choose us over the competition</p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-brand-card rounded-xl p-8 text-center card-hover border border-brand-border">
+                            <div class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                                <i data-lucide="cog" class="w-7 h-7 text-brand-orange"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">World-Class Components</h3>
+                            <p class="text-brand-muted leading-relaxed">Rotax engines from Austria, Dunlop tires, and premium parts sourced from the best manufacturers on the planet.</p>
+                        </div>
+                        <div class="bg-brand-card rounded-xl p-8 text-center card-hover border border-brand-border">
+                            <div class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                                <i data-lucide="trophy" class="w-7 h-7 text-brand-orange"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Race-Proven Performance</h3>
+                            <p class="text-brand-muted leading-relaxed">Winners at the Barstow-to-Las Vegas race and featured at Daytona Bike Week. Our bikes are built to compete and win.</p>
+                        </div>
+                        <div class="bg-brand-card rounded-xl p-8 text-center card-hover border border-brand-border">
+                            <div class="w-14 h-14 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                                <i data-lucide="mountain" class="w-7 h-7 text-brand-orange"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Built in Colorado</h3>
+                            <p class="text-brand-muted leading-relaxed">Every bike is handcrafted in our Carbondale, CO facility — surrounded by the trails we design for — since 1996.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="bg-brand-dark py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <h2 id="testimonials-title-a1b2" class="text-3xl md:text-4xl font-extrabold text-white mb-3">What Riders Say</h2>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-brand-card rounded-xl p-8 border border-brand-border relative">
+                            <div class="text-brand-orange text-5xl font-serif leading-none mb-4">"</div>
+                            <p class="text-brand-light leading-relaxed mb-6">My Enduro 550 handles like a dream on Colorado trails. Best investment I've made.</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange font-bold">J</div>
+                                <div><p class="text-white font-semibold text-sm">Jake M.</p><p class="text-brand-muted text-xs">Denver, CO</p></div>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card rounded-xl p-8 border border-brand-border relative">
+                            <div class="text-brand-orange text-5xl font-serif leading-none mb-4">"</div>
+                            <p class="text-brand-light leading-relaxed mb-6">Switched from a Japanese brand and never looked back. The build quality is unreal.</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange font-bold">S</div>
+                                <div><p class="text-white font-semibold text-sm">Sarah T.</p><p class="text-brand-muted text-xs">Moab, UT</p></div>
+                            </div>
+                        </div>
+                        <div class="bg-brand-card rounded-xl p-8 border border-brand-border relative">
+                            <div class="text-brand-orange text-5xl font-serif leading-none mb-4">"</div>
+                            <p class="text-brand-light leading-relaxed mb-6">Won my first amateur enduro race on a Dirt Bikes USA Enduro 250. These bikes are legit.</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center text-brand-orange font-bold">M</div>
+                                <div><p class="text-white font-semibold text-sm">Marcus R.</p><p class="text-brand-muted text-xs">Flagstaff, AZ</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletter -->
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-2xl mx-auto px-4 md:px-6 text-center">
+                    <i data-lucide="mail" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
+                    <h2 id="newsletter-title-c3d4" class="text-3xl md:text-4xl font-extrabold text-white mb-3">Join the Dirt Bikes Family</h2>
+                    <p class="text-brand-muted mb-8">Get the latest news, product launches, and exclusive offers delivered to your inbox.</p>
+                    <form id="home-newsletter-form-e5f6" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                        <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-lg bg-brand-card border border-brand-border text-white text-base placeholder-brand-muted focus:outline-none focus:border-brand-orange" required />
+                        <button type="submit" class="btn-orange px-6 py-3 rounded-lg font-bold text-sm uppercase tracking-wide cursor-pointer whitespace-nowrap">Subscribe</button>
+                    </form>
+                    <p id="home-newsletter-msg-g7h8" class="mt-4 text-sm hidden"></p>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== PRODUCTS PAGE ==================== -->
+        <div id="products" class="page-section">
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <span class="text-brand-orange text-sm font-bold uppercase tracking-widest">The Lineup</span>
+                        <h1 id="products-title-i9j0" class="text-4xl md:text-5xl font-extrabold text-white mt-2 mb-3">Our Lineup</h1>
+                        <p class="text-brand-muted text-lg max-w-xl mx-auto">Four precision-engineered models for every type of rider</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-20">
+                        <!-- Enduro 250 -->
+                        <div class="bg-brand-card rounded-xl overflow-hidden border border-brand-border card-hover">
+                            <div class="h-48 bg-gradient-to-br from-brand-card to-brand-dark flex items-center justify-center">
+                                <svg viewBox="0 0 120 80" class="w-32 h-20 text-brand-orange" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="25" cy="55" r="16"/><circle cx="95" cy="55" r="16"/><path d="M25 55l15-30h20l20 30"/><path d="M40 25l8 12"/><circle cx="25" cy="55" r="4" fill="currentColor"/><circle cx="95" cy="55" r="4" fill="currentColor"/><path d="M60 25l5-8h10" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Endurance / Cross-Country</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Enduro 250</h3>
+                                <p class="text-brand-muted text-sm mb-4">The perfect entry point to endurance racing. Lightweight and agile.</p>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="gauge" class="w-4 h-4 text-brand-orange"></i> 250cc Rotax Engine</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="zap" class="w-4 h-4 text-brand-orange"></i> Kick & Electric Start</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="compass" class="w-4 h-4 text-brand-orange"></i> Steering Stabilizer</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="droplets" class="w-4 h-4 text-brand-orange"></i> Liquid Cooling</div>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-brand-border">
+                                    <span class="text-3xl font-extrabold text-brand-orange">$6,250</span>
+                                    <span class="text-xs text-brand-muted">2,195 sold in 2022</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enduro 550 -->
+                        <div class="bg-brand-card rounded-xl overflow-hidden border border-brand-orange/40 card-hover relative">
+                            <div class="absolute top-4 right-4 bg-brand-orange text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full z-10">Best Seller</div>
+                            <div class="h-48 bg-gradient-to-br from-brand-orange/10 to-brand-dark flex items-center justify-center">
+                                <svg viewBox="0 0 120 80" class="w-32 h-20 text-brand-orange" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="25" cy="55" r="16"/><circle cx="95" cy="55" r="16"/><path d="M25 55l15-30h20l20 30"/><path d="M40 25l8 12"/><circle cx="25" cy="55" r="4" fill="currentColor"/><circle cx="95" cy="55" r="4" fill="currentColor"/><path d="M60 25l5-8h10" stroke-linecap="round"/><path d="M55 20l3-5" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Endurance / Cross-Country</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Enduro 550</h3>
+                                <p class="text-brand-muted text-sm mb-4">Our flagship endurance racer. Maximum power for serious competition.</p>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="gauge" class="w-4 h-4 text-brand-orange"></i> 550cc Rotax Engine</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="zap" class="w-4 h-4 text-brand-orange"></i> Kick & Electric Start</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="compass" class="w-4 h-4 text-brand-orange"></i> Steering Stabilizer</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="droplets" class="w-4 h-4 text-brand-orange"></i> Liquid Cooling</div>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-brand-border">
+                                    <span class="text-3xl font-extrabold text-brand-orange">$8,800</span>
+                                    <span class="text-xs text-brand-muted">3,647 sold in 2022</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Moto 300 -->
+                        <div class="bg-brand-card rounded-xl overflow-hidden border border-brand-border card-hover">
+                            <div class="h-48 bg-gradient-to-br from-brand-card to-brand-dark flex items-center justify-center">
+                                <svg viewBox="0 0 120 80" class="w-32 h-20 text-brand-orange" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="25" cy="55" r="16"/><circle cx="95" cy="55" r="16"/><path d="M25 55l18-32h16l22 32"/><path d="M43 23l6 10"/><circle cx="25" cy="55" r="4" fill="currentColor"/><circle cx="95" cy="55" r="4" fill="currentColor"/><path d="M59 23l4-8h8" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Motocross</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Moto 300</h3>
+                                <p class="text-brand-muted text-sm mb-4">Engineered for the motocross track. Superior handling on jumps and corners.</p>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="gauge" class="w-4 h-4 text-brand-orange"></i> 300cc Rotax Engine</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="zap" class="w-4 h-4 text-brand-orange"></i> Kick & Electric Start</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="compass" class="w-4 h-4 text-brand-orange"></i> Steering Stabilizer</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="droplets" class="w-4 h-4 text-brand-orange"></i> Liquid Cooling</div>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-brand-border">
+                                    <span class="text-3xl font-extrabold text-brand-orange">$7,295</span>
+                                    <span class="text-xs text-brand-muted">2,627 sold in 2022</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Moto 450 -->
+                        <div class="bg-brand-card rounded-xl overflow-hidden border border-red-500/30 card-hover relative">
+                            <div class="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full z-10">Most Powerful</div>
+                            <div class="h-48 bg-gradient-to-br from-red-900/20 to-brand-dark flex items-center justify-center">
+                                <svg viewBox="0 0 120 80" class="w-32 h-20 text-brand-orange" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="25" cy="55" r="16"/><circle cx="95" cy="55" r="16"/><path d="M25 55l18-32h16l22 32"/><path d="M43 23l6 10"/><circle cx="25" cy="55" r="4" fill="currentColor"/><circle cx="95" cy="55" r="4" fill="currentColor"/><path d="M59 23l4-8h8" stroke-linecap="round"/><path d="M70 12l5 3" stroke-linecap="round"/><path d="M72 18l4-1" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-brand-muted">Motocross</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Moto 450</h3>
+                                <p class="text-brand-muted text-sm mb-4">Pure motocross dominance. Unmatched acceleration and track performance.</p>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="gauge" class="w-4 h-4 text-brand-orange"></i> 450cc Rotax Engine</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="zap" class="w-4 h-4 text-brand-orange"></i> Kick & Electric Start</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="compass" class="w-4 h-4 text-brand-orange"></i> Steering Stabilizer</div>
+                                    <div class="flex items-center gap-2 text-sm text-brand-light"><i data-lucide="droplets" class="w-4 h-4 text-brand-orange"></i> Liquid Cooling</div>
+                                </div>
+                                <div class="flex items-center justify-between pt-4 border-t border-brand-border">
+                                    <span class="text-3xl font-extrabold text-brand-orange">$9,395</span>
+                                    <span class="text-xs text-brand-muted">823 sold in 2022</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <div class="mb-8">
+                        <h2 id="compare-title-k1l2" class="text-2xl md:text-3xl font-extrabold text-white mb-8 text-center">Compare Models</h2>
+                        <div class="overflow-x-auto rounded-xl border border-brand-border">
+                            <table class="w-full text-left text-sm">
+                                <thead>
+                                    <tr class="bg-brand-card border-b border-brand-border">
+                                        <th class="px-4 py-4 font-semibold text-brand-muted uppercase tracking-wider text-xs">Spec</th>
+                                        <th class="px-4 py-4 font-semibold text-white text-center">Enduro 250</th>
+                                        <th class="px-4 py-4 font-semibold text-brand-orange text-center">Enduro 550</th>
+                                        <th class="px-4 py-4 font-semibold text-white text-center">Moto 300</th>
+                                        <th class="px-4 py-4 font-semibold text-white text-center">Moto 450</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-brand-light">
+                                    <tr class="border-b border-brand-border/50">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Category</td>
+                                        <td class="px-4 py-3 text-center">Endurance</td>
+                                        <td class="px-4 py-3 text-center">Endurance</td>
+                                        <td class="px-4 py-3 text-center">Motocross</td>
+                                        <td class="px-4 py-3 text-center">Motocross</td>
+                                    </tr>
+                                    <tr class="border-b border-brand-border/50 bg-brand-card/30">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Engine</td>
+                                        <td class="px-4 py-3 text-center">250cc Rotax</td>
+                                        <td class="px-4 py-3 text-center">550cc Rotax</td>
+                                        <td class="px-4 py-3 text-center">300cc Rotax</td>
+                                        <td class="px-4 py-3 text-center">450cc Rotax</td>
+                                    </tr>
+                                    <tr class="border-b border-brand-border/50">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Starting</td>
+                                        <td class="px-4 py-3 text-center">Kick & Electric</td>
+                                        <td class="px-4 py-3 text-center">Kick & Electric</td>
+                                        <td class="px-4 py-3 text-center">Kick & Electric</td>
+                                        <td class="px-4 py-3 text-center">Kick & Electric</td>
+                                    </tr>
+                                    <tr class="border-b border-brand-border/50 bg-brand-card/30">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Steering Stabilizer</td>
+                                        <td class="px-4 py-3 text-center text-green-400">✓</td>
+                                        <td class="px-4 py-3 text-center text-green-400">✓</td>
+                                        <td class="px-4 py-3 text-center text-green-400">✓</td>
+                                        <td class="px-4 py-3 text-center text-green-400">✓</td>
+                                    </tr>
+                                    <tr class="border-b border-brand-border/50">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Cooling</td>
+                                        <td class="px-4 py-3 text-center">Liquid</td>
+                                        <td class="px-4 py-3 text-center">Liquid</td>
+                                        <td class="px-4 py-3 text-center">Liquid</td>
+                                        <td class="px-4 py-3 text-center">Liquid</td>
+                                    </tr>
+                                    <tr class="border-b border-brand-border/50 bg-brand-card/30">
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Units Sold (2022)</td>
+                                        <td class="px-4 py-3 text-center">2,195</td>
+                                        <td class="px-4 py-3 text-center font-bold text-brand-orange">3,647</td>
+                                        <td class="px-4 py-3 text-center">2,627</td>
+                                        <td class="px-4 py-3 text-center">823</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-medium text-brand-muted">Price</td>
+                                        <td class="px-4 py-3 text-center font-bold text-white">$6,250</td>
+                                        <td class="px-4 py-3 text-center font-bold text-brand-orange">$8,800</td>
+                                        <td class="px-4 py-3 text-center font-bold text-white">$7,295</td>
+                                        <td class="px-4 py-3 text-center font-bold text-white">$9,395</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== ABOUT PAGE ==================== -->
+        <div id="about" class="page-section">
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <span class="text-brand-orange text-sm font-bold uppercase tracking-widest">Est. 1996</span>
+                        <h1 id="about-title-m3n4" class="text-4xl md:text-5xl font-extrabold text-white mt-2 mb-3">Our Story</h1>
+                    </div>
+                    <div class="max-w-3xl mx-auto mb-20">
+                        <p class="text-brand-light text-lg leading-relaxed mb-6">Dirt Bikes USA was founded in 1996 by Carl Schmidt and Steven McFadden, two experienced bikers with engineering backgrounds who saw the growing popularity of dirt bikes in the United States. They developed custom frames optimized for off-road handling and began building their own models using top-quality motorcycle engines.</p>
+                        <p class="text-brand-light text-lg leading-relaxed">After Steven finished first in the famous Barstow to Las Vegas race on one of their customized bikes, demand exploded. They opened a production facility in Carbondale, Colorado, which has since grown to house over 140 employees.</p>
+                    </div>
+
+                    <!-- What Makes Us Different -->
+                    <div class="mb-20">
+                        <h2 id="diff-title-o5p6" class="text-2xl md:text-3xl font-extrabold text-white mb-10 text-center">What Makes Us Different</h2>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-brand-card rounded-xl p-6 text-center border border-brand-border card-hover">
+                                <div class="w-12 h-12 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="wrench" class="w-6 h-6 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2">Custom Engineering</h3>
+                                <p class="text-brand-muted text-sm">Every frame is designed and built in-house for maximum off-road performance.</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-6 text-center border border-brand-border card-hover">
+                                <div class="w-12 h-12 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="globe" class="w-6 h-6 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2">Global Quality</h3>
+                                <p class="text-brand-muted text-sm">Components sourced from the world's best manufacturers — Austria, Japan, and beyond.</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-6 text-center border border-brand-border card-hover">
+                                <div class="w-12 h-12 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="flag" class="w-6 h-6 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2">Race Heritage</h3>
+                                <p class="text-brand-muted text-sm">Born on the racetrack. Proven at Barstow-Vegas, Daytona, and events worldwide.</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-6 text-center border border-brand-border card-hover">
+                                <div class="w-12 h-12 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="heart" class="w-6 h-6 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-2">Family Culture</h3>
+                                <p class="text-brand-muted text-sm">140+ employees who ride together, build together, and share a passion for dirt.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leadership -->
+                    <div class="mb-20">
+                        <h2 id="leadership-title-q7r8" class="text-2xl md:text-3xl font-extrabold text-white mb-10 text-center">Leadership</h2>
+                        <div class="grid sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                            <div class="bg-brand-card rounded-xl p-8 text-center border border-brand-border">
+                                <div class="w-20 h-20 rounded-full bg-brand-orange/20 flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="user" class="w-10 h-10 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Carl Schmidt</h3>
+                                <p class="text-brand-orange text-sm font-semibold">CEO & Co-Founder</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-8 text-center border border-brand-border">
+                                <div class="w-20 h-20 rounded-full bg-brand-orange/20 flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="user" class="w-10 h-10 text-brand-orange"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Steven McFadden</h3>
+                                <p class="text-brand-orange text-sm font-semibold">President & COO, Co-Founder</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="bg-brand-card rounded-xl border border-brand-border p-8">
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+                            <div>
+                                <p class="text-3xl font-extrabold text-brand-orange">1996</p>
+                                <p class="text-brand-muted text-sm mt-1">Founded</p>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-extrabold text-brand-orange">140+</p>
+                                <p class="text-brand-muted text-sm mt-1">Employees</p>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-extrabold text-brand-orange">40+</p>
+                                <p class="text-brand-muted text-sm mt-1">Distributors</p>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-extrabold text-brand-orange">4</p>
+                                <p class="text-brand-muted text-sm mt-1">Models</p>
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <p class="text-3xl font-extrabold text-brand-orange">$60M+</p>
+                                <p class="text-brand-muted text-sm mt-1">Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== CONTACT PAGE ==================== -->
+        <div id="contact" class="page-section">
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-14">
+                        <span class="text-brand-orange text-sm font-bold uppercase tracking-widest">Get In Touch</span>
+                        <h1 id="contact-title-s9t0" class="text-4xl md:text-5xl font-extrabold text-white mt-2 mb-3">Contact Us</h1>
+                        <p class="text-brand-muted text-lg">We'd love to hear from you. Reach out anytime.</p>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-12 mb-20">
+                        <!-- Contact Info -->
+                        <div>
+                            <h2 class="text-2xl font-bold text-white mb-6">Contact Information</h2>
+                            <div class="space-y-5">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="map-pin" class="w-5 h-5 text-brand-orange"></i>
+                                    </div>
+                                    <div><p class="text-white font-semibold">Address</p><p class="text-brand-muted">1250 Main Street, Carbondale, CO 81623</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="phone" class="w-5 h-5 text-brand-orange"></i>
+                                    </div>
+                                    <div><p class="text-white font-semibold">Phone</p><p class="text-brand-muted">(970) 555-BIKE (2453)</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="mail" class="w-5 h-5 text-brand-orange"></i>
+                                    </div>
+                                    <div><p class="text-white font-semibold">Email</p><p class="text-brand-muted">info@dirtbikesusa.com</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="clock" class="w-5 h-5 text-brand-orange"></i>
+                                    </div>
+                                    <div><p class="text-white font-semibold">Hours</p><p class="text-brand-muted">Mon–Fri, 8:00 AM – 5:00 PM MT</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="building" class="w-5 h-5 text-brand-orange"></i>
+                                    </div>
+                                    <div><p class="text-white font-semibold">Dealer Inquiries</p><p class="text-brand-muted">dealers@dirtbikesusa.com</p></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="bg-brand-card rounded-xl p-8 border border-brand-border">
+                            <h2 class="text-2xl font-bold text-white mb-6">Send Us a Message</h2>
+                            <form id="contact-form-u1v2" class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-brand-light mb-1">Name <span class="text-red-400">*</span></label>
+                                    <input type="text" id="contact-name-w3x4" class="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-white text-base placeholder-brand-muted focus:outline-none focus:border-brand-orange" placeholder="Your full name" required />
+                                    <p id="contact-name-err-y5z6" class="text-red-400 text-xs mt-1 hidden">Please enter your name.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-brand-light mb-1">Email <span class="text-red-400">*</span></label>
+                                    <input type="email" id="contact-email-a7b8" class="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-white text-base placeholder-brand-muted focus:outline-none focus:border-brand-orange" placeholder="you@example.com" required />
+                                    <p id="contact-email-err-c9d0" class="text-red-400 text-xs mt-1 hidden">Please enter a valid email.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-brand-light mb-1">Phone <span class="text-brand-muted">(optional)</span></label>
+                                    <input type="tel" id="contact-phone-e1f2" class="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-white text-base placeholder-brand-muted focus:outline-none focus:border-brand-orange" placeholder="(555) 555-5555" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-brand-light mb-1">Subject <span class="text-red-400">*</span></label>
+                                    <select id="contact-subject-g3h4" class="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-white text-base focus:outline-none focus:border-brand-orange" required>
+                                        <option value="">Select a subject</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="product">Product Information</option>
+                                        <option value="dealer">Dealer Inquiry</option>
+                                        <option value="parts">Parts & Service</option>
+                                        <option value="warranty">Warranty</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <p id="contact-subject-err-i5j6" class="text-red-400 text-xs mt-1 hidden">Please select a subject.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-brand-light mb-1">Message <span class="text-red-400">*</span></label>
+                                    <textarea id="contact-message-k7l8" rows="4" class="w-full px-4 py-3 rounded-lg bg-brand-dark border border-brand-border text-white text-base placeholder-brand-muted focus:outline-none focus:border-brand-orange resize-none" placeholder="Tell us how we can help..." required></textarea>
+                                    <p id="contact-message-err-m9n0" class="text-red-400 text-xs mt-1 hidden">Please enter a message.</p>
+                                </div>
+                                <button type="submit" class="btn-orange w-full py-3 rounded-lg font-bold text-sm uppercase tracking-wide cursor-pointer flex items-center justify-center gap-2">
+                                    <i data-lucide="send" class="w-4 h-4"></i> Send Message
+                                </button>
+                            </form>
+                            <div id="contact-success-o1p2" class="hidden mt-6 bg-green-900/30 border border-green-600/30 text-green-400 rounded-lg p-4 text-center">
+                                <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2"></i>
+                                <p class="font-semibold">Message sent successfully!</p>
+                                <p class="text-sm mt-1">We'll get back to you within 1-2 business days.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Find a Dealer -->
+                    <div class="bg-brand-card rounded-xl p-8 md:p-12 border border-brand-border text-center">
+                        <i data-lucide="store" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
+                        <h2 id="dealer-title-q3r4" class="text-2xl md:text-3xl font-extrabold text-white mb-3">Find a Dealer</h2>
+                        <p class="text-brand-muted max-w-xl mx-auto mb-6">With over 40 authorized distributors across the United States and growing international partnerships, there's a Dirt Bikes USA dealer near you. Contact our dealer network team to find your nearest location.</p>
+                        <p class="text-brand-orange font-semibold">dealers@dirtbikesusa.com &nbsp;|&nbsp; (970) 555-BIKE</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== BLOG PAGE ==================== -->
+        <div id="blog" class="page-section">
+            <section class="bg-brand-darker py-20">
+                <div class="max-w-7xl mx-auto px-4 md:px-6">
+                    <div class="text-center mb-10">
+                        <span class="text-brand-orange text-sm font-bold uppercase tracking-widest">From the Garage</span>
+                        <h1 id="blog-title-s5t6" class="text-4xl md:text-5xl font-extrabold text-white mt-2 mb-3">News & Updates</h1>
+                        <p class="text-brand-muted text-lg">Race results, product launches, and community stories</p>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-12">
+                        <button data-filter="all" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-orange text-white">All</button>
+                        <button data-filter="racing" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border">Racing</button>
+                        <button data-filter="products" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border">Products</button>
+                        <button data-filter="community" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border">Community</button>
+                        <button data-filter="tips" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border">Tips</button>
+                        <button data-filter="business" class="blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border">Business</button>
+                    </div>
+
+                    <!-- Blog Cards -->
+                    <div class="space-y-6 max-w-3xl mx-auto">
+                        <!-- Post 1 -->
+                        <article data-category="racing" class="blog-card bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-red-900/30 text-red-400">Racing</span>
+                                    <span class="text-xs text-brand-muted">March 15, 2026</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Dirt Bikes USA Takes Podium at Daytona Bike Week 2026</h3>
+                                <p class="text-brand-muted text-sm mb-4">Our factory team secured two podium finishes at this year's Daytona Bike Week, showcasing the Enduro 550 and Moto 450 against the world's best.</p>
+                                <button class="blog-read-more text-brand-orange text-sm font-semibold flex items-center gap-1 cursor-pointer">Read More <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <div class="blog-content mt-4 text-brand-light text-sm leading-relaxed">
+                                    <p class="mb-3">The 2026 Daytona Bike Week was one for the record books for Dirt Bikes USA. Rider Alex Torres brought the Enduro 550 to a stunning second-place finish in the endurance category, while teammate Jordan Blake powered the Moto 450 to third in the motocross sprint event.</p>
+                                    <p>"This is a testament to the hard work of our entire team — from the engineers in Carbondale to the riders who push these bikes to the limit," said CEO Carl Schmidt. The results have driven a surge in pre-orders for the 2026 model year lineup.</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Post 2 -->
+                        <article data-category="products" class="blog-card bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-900/30 text-blue-400">Products</span>
+                                    <span class="text-xs text-brand-muted">January 20, 2026</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Introducing the 2026 Model Year Lineup</h3>
+                                <p class="text-brand-muted text-sm mb-4">All four models receive significant updates for 2026, including revised suspension geometry, updated ECU mapping, and new colorways.</p>
+                                <button class="blog-read-more text-brand-orange text-sm font-semibold flex items-center gap-1 cursor-pointer">Read More <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <div class="blog-content mt-4 text-brand-light text-sm leading-relaxed">
+                                    <p class="mb-3">The 2026 model year marks the biggest annual update in Dirt Bikes USA history. Every model in our lineup — the Enduro 250, Enduro 550, Moto 300, and Moto 450 — receives revised suspension geometry developed through extensive race testing at our Colorado proving grounds.</p>
+                                    <p>New ECU mapping provides smoother power delivery across all RPM ranges, and updated exhaust systems improve both performance and sound. Two new colorway options — Midnight Stealth and Desert Storm — join the classic Carbondale Orange.</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Post 3 -->
+                        <article data-category="community" class="blog-card bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-green-900/30 text-green-400">Community</span>
+                                    <span class="text-xs text-brand-muted">February 8, 2026</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Dirt Bikes USA Owners' Group Hits 5,000 Members</h3>
+                                <p class="text-brand-muted text-sm mb-4">Our official owners' community has reached an incredible milestone, with riders from all 50 states connecting to share trails, tips, and adventures.</p>
+                                <button class="blog-read-more text-brand-orange text-sm font-semibold flex items-center gap-1 cursor-pointer">Read More <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <div class="blog-content mt-4 text-brand-light text-sm leading-relaxed">
+                                    <p class="mb-3">What started as a small forum in 2018 has grown into a vibrant community of over 5,000 Dirt Bikes USA owners. The group organizes monthly regional rides, shares maintenance tips, and connects riders of all experience levels.</p>
+                                    <p>To celebrate the milestone, we're hosting a National Owners' Rally at our Carbondale facility this summer, featuring factory tours, demo rides of the 2026 lineup, and a barbecue with the founding team. Stay tuned for registration details.</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Post 4 -->
+                        <article data-category="tips" class="blog-card bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-yellow-900/30 text-yellow-400">Tips</span>
+                                    <span class="text-xs text-brand-muted">April 1, 2026</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Trail Riding Tips: Preparing for Spring Season</h3>
+                                <p class="text-brand-muted text-sm mb-4">After a long winter, get your bike trail-ready with our comprehensive spring prep checklist from the Dirt Bikes USA service team.</p>
+                                <button class="blog-read-more text-brand-orange text-sm font-semibold flex items-center gap-1 cursor-pointer">Read More <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <div class="blog-content mt-4 text-brand-light text-sm leading-relaxed">
+                                    <p class="mb-3">Spring is the most exciting time for trail riders, but before you hit the dirt, your bike needs some attention. Our service team recommends starting with a full fluid check — engine oil, coolant, and brake fluid should all be fresh after winter storage.</p>
+                                    <p>Inspect your chain tension and lubrication, check tire pressure and tread depth, and test all electrical systems including lights and the kill switch. Don't forget to charge or replace your battery if it sat unused. A 30-minute pre-season inspection can prevent hours of trailside frustration.</p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Post 5 -->
+                        <article data-category="business" class="blog-card bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-widest px-2 py-1 rounded bg-purple-900/30 text-purple-400">Business</span>
+                                    <span class="text-xs text-brand-muted">November 12, 2025</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">New European Distribution Partners Announced</h3>
+                                <p class="text-brand-muted text-sm mb-4">Dirt Bikes USA expands its global footprint with new distribution agreements covering Germany, Austria, and the United Kingdom.</p>
+                                <button class="blog-read-more text-brand-orange text-sm font-semibold flex items-center gap-1 cursor-pointer">Read More <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <div class="blog-content mt-4 text-brand-light text-sm leading-relaxed">
+                                    <p class="mb-3">We're thrilled to announce partnerships with three leading off-road distributors in Europe. Riders in Germany, Austria, and the United Kingdom will soon have direct access to the full Dirt Bikes USA lineup through authorized dealer networks.</p>
+                                    <p>"Europe has an incredible off-road culture, and we've been getting requests from European riders for years," said President Steven McFadden. "These partnerships allow us to serve that market with full dealer support, warranty coverage, and parts availability." First shipments are expected in Q1 2026.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-brand-darker border-t border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-12">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <!-- Brand -->
+                <div class="sm:col-span-2 lg:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg viewBox="0 0 32 32" class="w-7 h-7 text-brand-orange" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="22" r="6"/><circle cx="24" cy="22" r="6"/><path d="M8 22l6-12h6l4 12"/><path d="M14 10l3 5"/></svg>
+                        <span class="text-lg font-extrabold text-white">DIRT BIKES <span class="text-brand-orange">USA</span></span>
+                    </div>
+                    <p class="text-brand-muted text-sm leading-relaxed">Premium off-road motorcycles handcrafted in Carbondale, Colorado since 1996.</p>
+                    <div class="flex gap-3 mt-5">
+                        <a href="#" class="w-9 h-9 bg-brand-card hover:bg-brand-orange rounded-lg flex items-center justify-center transition-colors group" title="Facebook">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 group-hover:text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 bg-brand-card hover:bg-brand-orange rounded-lg flex items-center justify-center transition-colors group" title="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 group-hover:text-white"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="5"></circle><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"></circle></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 bg-brand-card hover:bg-brand-orange rounded-lg flex items-center justify-center transition-colors group" title="Twitter/X">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-gray-400 group-hover:text-white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 bg-brand-card hover:bg-brand-orange rounded-lg flex items-center justify-center transition-colors group" title="YouTube">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 group-hover:text-white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path><polygon points="9.75,15.02 15.5,12 9.75,8.98" fill="currentColor" stroke="none"></polygon></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" data-page="home" class="footer-nav-link text-brand-muted text-sm hover:text-brand-orange cursor-pointer">Home</a></li>
+                        <li><a href="#products" data-page="products" class="footer-nav-link text-brand-muted text-sm hover:text-brand-orange cursor-pointer">Products</a></li>
+                        <li><a href="#about" data-page="about" class="footer-nav-link text-brand-muted text-sm hover:text-brand-orange cursor-pointer">About</a></li>
+                        <li><a href="#contact" data-page="contact" class="footer-nav-link text-brand-muted text-sm hover:text-brand-orange cursor-pointer">Contact</a></li>
+                        <li><a href="#blog" data-page="blog" class="footer-nav-link text-brand-muted text-sm hover:text-brand-orange cursor-pointer">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Contact</h4>
+                    <ul class="space-y-2 text-brand-muted text-sm">
+                        <li>1250 Main Street</li>
+                        <li>Carbondale, CO 81623</li>
+                        <li>(970) 555-BIKE</li>
+                        <li>info@dirtbikesusa.com</li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Newsletter</h4>
+                    <p class="text-brand-muted text-sm mb-3">Stay up to date with news and offers.</p>
+                    <form id="footer-newsletter-form-u7v8" class="flex gap-2">
+                        <input type="email" placeholder="Email" class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-brand-card border border-brand-border text-white text-sm placeholder-brand-muted focus:outline-none focus:border-brand-orange" required />
+                        <button type="submit" class="btn-orange px-4 py-2 rounded-lg text-sm font-bold cursor-pointer">Go</button>
+                    </form>
+                    <p id="footer-newsletter-msg-w9x0" class="mt-2 text-xs hidden"></p>
+                </div>
+            </div>
+
+            <div class="border-t border-brand-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-muted">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // ---- SPA Navigation ----
+        const pages = ['home', 'products', 'about', 'contact', 'blog'];
+
+        function navigateTo(pageId) {
+            if (!pages.includes(pageId)) return;
+
+            // Hide all pages, show target
+            pages.forEach(function(p) {
+                var el = document.getElementById(p);
+                if (el) el.classList.remove('active');
+            });
+            var target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            // Update nav active state - desktop
+            document.querySelectorAll('[data-page]').forEach(function(link) {
+                if (link.classList.contains('nav-link') || link.classList.contains('mobile-nav-link')) {
+                    link.classList.remove('active');
+                    link.classList.remove('text-brand-light');
+                    link.classList.add('text-brand-muted');
+                    if (link.dataset.page === pageId) {
+                        link.classList.add('active');
+                        link.classList.add('text-brand-light');
+                        link.classList.remove('text-brand-muted');
+                    }
+                }
+            });
+
+            // Close mobile menu
+            document.getElementById('mobile-menu-m3n4').classList.add('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Attach nav listeners to all elements with data-page
+        document.querySelectorAll('[data-page]').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateTo(this.dataset.page);
+            });
+        });
+
+        // ---- Mobile Hamburger Menu ----
+        var hamburger = document.getElementById('hamburger-btn-x7k9');
+        var mobileMenu = document.getElementById('mobile-menu-m3n4');
+
+        hamburger.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // ---- Newsletter Forms ----
+        function handleNewsletter(formId, msgId) {
+            var form = document.getElementById(formId);
+            var msg = document.getElementById(msgId);
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var emailInput = form.querySelector('input[type="email"]');
+                if (emailInput && emailInput.value) {
+                    msg.textContent = 'Thanks for subscribing! You\'ll hear from us soon.';
+                    msg.className = 'mt-4 text-sm text-green-400';
+                    msg.classList.remove('hidden');
+                    emailInput.value = '';
+                    setTimeout(function() { msg.classList.add('hidden'); }, 5000);
+                }
+            });
+        }
+        handleNewsletter('home-newsletter-form-e5f6', 'home-newsletter-msg-g7h8');
+        handleNewsletter('footer-newsletter-form-u7v8', 'footer-newsletter-msg-w9x0');
+
+        // ---- Contact Form ----
+        var contactForm = document.getElementById('contact-form-u1v2');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var valid = true;
+
+            var nameInput = document.getElementById('contact-name-w3x4');
+            var nameErr = document.getElementById('contact-name-err-y5z6');
+            if (!nameInput.value.trim()) { nameErr.classList.remove('hidden'); valid = false; } else { nameErr.classList.add('hidden'); }
+
+            var emailInput = document.getElementById('contact-email-a7b8');
+            var emailErr = document.getElementById('contact-email-err-c9d0');
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) { emailErr.classList.remove('hidden'); valid = false; } else { emailErr.classList.add('hidden'); }
+
+            var subjectInput = document.getElementById('contact-subject-g3h4');
+            var subjectErr = document.getElementById('contact-subject-err-i5j6');
+            if (!subjectInput.value) { subjectErr.classList.remove('hidden'); valid = false; } else { subjectErr.classList.add('hidden'); }
+
+            var msgInput = document.getElementById('contact-message-k7l8');
+            var msgErr = document.getElementById('contact-message-err-m9n0');
+            if (!msgInput.value.trim()) { msgErr.classList.remove('hidden'); valid = false; } else { msgErr.classList.add('hidden'); }
+
+            if (valid) {
+                contactForm.classList.add('hidden');
+                document.getElementById('contact-success-o1p2').classList.remove('hidden');
+                lucide.createIcons();
+                setTimeout(function() {
+                    contactForm.reset();
+                    contactForm.classList.remove('hidden');
+                    document.getElementById('contact-success-o1p2').classList.add('hidden');
+                }, 5000);
+            }
+        });
+
+        // ---- Blog Category Filter ----
+        document.querySelectorAll('.blog-filter-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var filter = this.dataset.filter;
+
+                // Update button styles
+                document.querySelectorAll('.blog-filter-btn').forEach(function(b) {
+                    b.className = 'blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-card text-brand-muted border border-brand-border';
+                });
+                this.className = 'blog-filter-btn px-4 py-2 rounded-full text-sm font-semibold cursor-pointer bg-brand-orange text-white';
+
+                // Filter cards
+                document.querySelectorAll('.blog-card').forEach(function(card) {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // ---- Blog Read More Toggle ----
+        document.querySelectorAll('.blog-read-more').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var content = this.nextElementSibling;
+                var isExpanded = content.classList.contains('expanded');
+                content.classList.toggle('expanded');
+                if (isExpanded) {
+                    this.innerHTML = 'Read More <i data-lucide="chevron-down" class="w-4 h-4"></i>';
+                } else {
+                    this.innerHTML = 'Read Less <i data-lucide="chevron-up" class="w-4 h-4"></i>';
+                }
+                lucide.createIcons();
+            });
+        });
+    </script>
+</body>
+</html>
